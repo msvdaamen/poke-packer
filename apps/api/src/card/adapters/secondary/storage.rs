@@ -23,7 +23,7 @@ impl Storage for StorageAdapter {
     async fn get_cards(&self) -> Vec<Card> {
         let mut cards: Vec<Card> = Vec::new();
         let mut join_set: JoinSet<Vec<Card>> = JoinSet::new();
-        if let Ok(mut result) = fs::read_dir("./data/cards/en").await {
+        if let Ok(mut result) = fs::read_dir("../../data/cards/en").await {
             while let Ok(Some(entry)) = result.next_entry().await {
                 if let Ok(file_type) = entry.file_type().await {
                     if file_type.is_file() {
