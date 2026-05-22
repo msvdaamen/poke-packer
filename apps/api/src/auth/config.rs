@@ -4,7 +4,7 @@ use crate::config::FromEnv;
 
 #[derive(Debug, Clone)]
 pub struct Config {
-    secret: String,
+    pub secret: String,
 }
 
 impl FromEnv for Config {

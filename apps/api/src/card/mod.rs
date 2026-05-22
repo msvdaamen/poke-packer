@@ -10,7 +10,7 @@ mod ports;
 
 pub use config::Config;
 
-pub fn register(config: Config) -> Router {
+pub fn register(_config: Config) -> Router {
     let storage = Arc::new(adapters::secondary::StorageAdapter::new());
     // let core = Arc::new(core::Core::new(storage));
     let core2 = Arc::new(core::Core::new(storage.clone()));

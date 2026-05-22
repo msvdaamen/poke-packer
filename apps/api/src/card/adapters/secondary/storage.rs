@@ -3,18 +3,14 @@ use std::path::PathBuf;
 use crate::card::{models::Card, ports::Storage};
 use async_trait::async_trait;
 use serde::Deserialize;
-use tokio::sync::mpsc;
+use tokio::fs;
 use tokio::task::JoinSet;
-use tokio::{
-    fs,
-    sync::mpsc::{Receiver, Sender},
-};
 
 pub struct StorageAdapter;
 
 impl StorageAdapter {
     pub fn new() -> Self {
-        StorageAdapter
+        Self {}
     }
 }
 
