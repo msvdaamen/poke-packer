@@ -40,7 +40,7 @@ impl Storage for StorageAdapter {
 
 #[derive(Deserialize, Debug)]
 struct CardJson {
-    id: String,
+    // id: String,
     name: String,
 }
 

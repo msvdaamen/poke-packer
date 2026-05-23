@@ -7,8 +7,9 @@ pub struct SignInDto {
 }
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct SignInResult {
+pub struct SignInResponse {
     pub access_token: String,
+    pub refresh_token: String,
 }
 
 pub enum SignInError {

@@ -21,3 +21,13 @@ sqlx = { version = "0.8", features = [
   "chrono",
 ] }
 chrono = { version = "0.4.44", features = ["serde"] }
+tokio-util = { version = "0.7.18", features = ["rt"] }
+tower = { version = "0.5", features = ["full"] }
+tower-http = { version = "0.6", features = ["timeout", "cors"] }
+tracing = "0.1.44"
+
+opentelemetry = { version = "0.32.0", features = ["metrics"] }
+opentelemetry_sdk = { version = "0.32.0", features = ["trace", "metrics", "logs"] }
+opentelemetry-stdout = { version = "0.32.0", features = ["trace", "metrics", "logs"] }
+opentelemetry-appender-tracing = "0.32.0"
+tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }

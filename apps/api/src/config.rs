@@ -8,6 +8,7 @@ pub trait FromEnv: Sized {
 
 #[derive(Debug, Clone)]
 pub struct Config {
+    pub port: String,
     pub database_url: String,
     pub auth: auth::Config,
     pub card: card::Config,
@@ -22,6 +23,7 @@ impl FromEnv for Config {
         let card = card::Config::from_env()?;
 
         Ok(Self {
+            port: env::var("PORT").unwrap_or_else(|_| "3000".to_string()),
             database_url,
             auth,
             card,
