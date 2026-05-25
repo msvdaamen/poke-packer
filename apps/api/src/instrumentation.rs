@@ -24,9 +24,9 @@ impl Instrumentation {
     }
 
     pub fn start(&self) {
-        global::set_tracer_provider(self.tracer_provider.clone());
-        global::set_meter_provider(self.meter_provider.clone());
         if self.is_production {
+            global::set_tracer_provider(self.tracer_provider.clone());
+            global::set_meter_provider(self.meter_provider.clone());
             let otel_layer = OpenTelemetryTracingBridge::new(&self.logger_provider);
             tracing_subscriber::registry().with(otel_layer).init();
         } else {

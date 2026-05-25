@@ -1,0 +1,20 @@
+[package]
+name = "auth"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum.workspace = true
+sqlx.workspace = true
+serde.workspace = true
+argon2.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+jsonwebtoken.workspace = true
+uuid.workspace = true
+validator.workspace = true
+tracing.workspace = true
+axum-valid.workspace = true
+
+user.workspace = true
+shared.workspace = true

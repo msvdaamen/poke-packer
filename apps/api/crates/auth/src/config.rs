@@ -1,0 +1,16 @@
+use std::env;
+
+use shared::config::FromEnv;
+
+#[derive(Debug, Clone)]
+pub struct Config {
+    pub secret: String,
+}
+
+impl FromEnv for Config {
+    fn from_env() -> Result<Self, String> {
+        Ok(Self {
+            secret: env::var("AUTH_SECRET_KEY").map_err(|_| "AUTH_SECRET_KEY is not set")?,
+        })
+    }
+}
