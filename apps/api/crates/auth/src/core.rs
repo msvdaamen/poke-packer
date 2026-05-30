@@ -71,7 +71,11 @@ impl Core {
 #[async_trait]
 impl ports::Handler for Core {
     async fn sign_in(&self, dto: SignInDto) -> Result<SignInResult, SignInError> {
-        let user = self.user.find_with_password_by_email(&dto.email).await;
+        let user = self
+            .user
+            .find_with_password_by_email(&dto.email)
+            .await
+            .map_err(|_| SignInError::InternalServerError)?;
         let Some(user) = user else {
             return Err(SignInError::UserNotFound);
         };

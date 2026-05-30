@@ -10,3 +10,7 @@ chrono.workspace = true
 uuid.workspace = true
 serde.workspace = true
 async-trait.workspace = true
+tonic.workspace = true
+prost-types.workspace = true
+
+api.workspace = true

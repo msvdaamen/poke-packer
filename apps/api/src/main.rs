@@ -1,35 +1,46 @@
 mod app;
 mod config;
 mod cron;
+mod grpc;
 mod instrumentation;
 mod router;
 
 use std::sync::Arc;
 
+use crate::{app::create_app, cron::CronScheduler, instrumentation::Instrumentation};
 use shared::config::FromEnv;
 use sqlx::postgres::PgPoolOptions;
-
-use crate::{app::create_app, cron::CronScheduler, instrumentation::Instrumentation};
+use tokio::select;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let config = config::Config::from_env()?;
 
-    let instrumentation = Instrumentation::new(false);
+    let instrumentation = Instrumentation::new(config.is_production);
     instrumentation.start();
 
     let db_pool = PgPoolOptions::new().connect(&config.database_url).await?;
     let cron_manager = Arc::new(CronScheduler::new());
 
-    let router = create_app(&config, db_pool, cron_manager);
-    let addr = format!("0.0.0.0:{}", config.port.clone());
-    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    let (http_router, grpc_router) = create_app(&config, db_pool, cron_manager);
+    let http_addr = format!("[::1]:{}", config.port.clone());
+    let listener = tokio::net::TcpListener::bind(&http_addr).await.unwrap();
 
-    let http_task = axum::serve(listener, router)
+    let http_task = axum::serve(listener, http_router)
         .with_graceful_shutdown(async move { shutdown_signal().await });
-    println!("Server running on: http://{}", addr);
 
-    http_task.await.unwrap();
+    let grpc_addr = "[::1]:50051".parse()?;
+
+    let grpc_task = grpc_router.serve_with_shutdown(grpc_addr, shutdown_signal());
+
+    println!("Http server running on: http://{}", http_addr);
+    println!("Grpc server running on: http://{}", grpc_addr);
+
+    select! {
+        _ = http_task => {}
+        _ = grpc_task => {}
+    }
+
     instrumentation.stop();
     Ok(())
 }

@@ -33,6 +33,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 
 [[package]]
+name = "api"
+version = "0.1.0"
+dependencies = [
+ "prost",
+ "prost-types",
+ "tonic",
+ "tonic-prost",
+ "tonic-prost-build",
+]
+
+[[package]]
 name = "argon2"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -74,6 +85,7 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 name = "auth"
 version = "0.1.0"
 dependencies = [
+ "api",
  "argon2",
  "async-trait",
  "axum",
@@ -83,6 +95,7 @@ dependencies = [
  "serde",
  "shared",
  "sqlx",
+ "tonic",
  "tracing",
  "user",
  "uuid",
@@ -1812,6 +1825,8 @@ dependencies = [
 name = "ptcg-collector"
 version = "0.1.0"
 dependencies = [
+ "api",
+ "async-trait",
  "auth",
  "axum",
  "card",
@@ -1826,7 +1841,7 @@ dependencies = [
  "tokio",
  "tonic",
  "tonic-health",
- "tonic-prost-build",
+ "tonic-prost",
  "tonic-reflection",
  "tower",
  "tower-http",
@@ -2964,11 +2979,14 @@ dependencies = [
 name = "user"
 version = "0.1.0"
 dependencies = [
+ "api",
  "async-trait",
  "axum",
  "chrono",
+ "prost-types",
  "serde",
  "sqlx",
+ "tonic",
  "uuid",
 ]
 

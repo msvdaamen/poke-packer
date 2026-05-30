@@ -6,6 +6,7 @@ use std::env;
 pub struct Config {
     pub port: String,
     pub database_url: String,
+    pub is_production: bool,
     pub auth: auth::Config,
     pub card: card::Config,
 }
@@ -20,6 +21,9 @@ impl FromEnv for Config {
         Ok(Self {
             port: env::var("PORT").unwrap_or_else(|_| "3000".to_string()),
             database_url: env::var("DATABASE_URL").map_err(|e| e.to_string())?,
+            is_production: env::var("ENVIRONMENT")
+                .map(|value| value == "production")
+                .unwrap_or(false),
             auth,
             card,
         })

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package api.user;
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message UserWithPassword {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string password = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message GetUserWithPasswordByEmailRequest {
+  string email = 1;
+}
+
+message GetUserWithPasswordByEmailResponse {
+  UserWithPassword user = 1;
+}
+
+service UserService {
+  rpc GetUserWithPasswordByEmail(GetUserWithPasswordByEmailRequest) returns (GetUserWithPasswordByEmailResponse);
+}

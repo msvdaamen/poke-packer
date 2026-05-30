@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["crates/auth", "crates/card", "crates/shared", "crates/user"]
+members = ["crates/api", "crates/auth", "crates/card", "crates/shared", "crates/user"]
 
 [package]
 name = "ptcg-collector"
@@ -38,9 +38,12 @@ tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }
 validator = { version = "0.20.0", features = ["derive"] }
 axum-valid = "0.24.0"
 prost = "0.14.3"
+prost-types = "0.14.3"
 tonic = "0.14.6"
+tonic-prost = "0.14.6"
 tonic-health = "0.14.6"
 tonic-reflection = "0.14.6"
+api = { path = "crates/api" }
 user = { path = "crates/user" }
 shared = { path = "crates/shared" }
 card = { path = "crates/card" }
@@ -58,15 +61,15 @@ opentelemetry_sdk.workspace = true
 opentelemetry-stdout.workspace = true
 opentelemetry-appender-tracing.workspace = true
 tracing-subscriber.workspace = true
+async-trait.workspace = true
 sqlx.workspace = true
 prost.workspace = true
 tonic.workspace = true
+tonic-prost.workspace = true
 tonic-health.workspace = true
 tonic-reflection.workspace = true
+api = { path = "crates/api" }
 shared = { path = "crates/shared" }
 user = { path = "crates/user" }
 auth = { path = "crates/auth" }
 card = { path = "crates/card" }
-
-[build-dependencies]
-tonic-prost-build = "0.14.6"
