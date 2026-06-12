@@ -6,7 +6,7 @@ use sqlx::{Pool, Postgres};
 
 use crate::adapters::primary::GrpcAdapter;
 
-pub use self::adapters::primary::Service;
+pub use self::adapters::primary::HttpAdapter;
 
 mod adapters;
 pub mod api;
@@ -14,14 +14,13 @@ mod core;
 mod models;
 mod ports;
 
-pub fn register(pool: Pool<Postgres>) -> (Router, Service, UserServiceServer<GrpcAdapter>) {
+pub fn register(pool: Pool<Postgres>) -> (Router, UserServiceServer<GrpcAdapter>) {
     let storage = Box::new(adapters::secondary::PostgresAdapter::new(pool));
 
     let core = Arc::new(core::Core::new(storage));
 
-    let http_adapter = adapters::primary::http(core.clone());
-    let service = Service::new(core.clone());
+    let http_adapter = HttpAdapter::new(core.clone());
     let grpc_adapter = UserServiceServer::new(GrpcAdapter::new(core.clone()));
 
-    (http_adapter, service, grpc_adapter)
+    (http_adapter, grpc_adapter)
 }

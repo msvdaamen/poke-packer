@@ -1,8 +1,9 @@
 syntax = "proto3";
 
-package api.user;
+package grp.user;
 
 import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
 
 message User {
   string id = 1;
@@ -22,7 +23,7 @@ message UserWithPassword {
 }
 
 message GetUserWithPasswordByEmailRequest {
-  string email = 1;
+  string email = 1 [(validate.rules).string.email = true];
 }
 
 message GetUserWithPasswordByEmailResponse {

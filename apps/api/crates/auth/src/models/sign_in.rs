@@ -1,5 +1,7 @@
+use shared::types::Email;
+
 pub struct SignInDto {
-    pub email: String,
+    pub email: Email,
     pub password: String,
 }
 

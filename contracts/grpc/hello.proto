@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package api.hello;
+package grp.hello;
 
 message HelloRequest {}
 message HelloResponse {

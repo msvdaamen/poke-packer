@@ -1,10 +1,10 @@
 use std::{env, path::PathBuf};
 
-const PROTOS: &[&str] = &["hello.proto", "api/user.proto"];
+const PROTOS: &[&str] = &["hello.proto", "user.proto"];
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let contracts_dir =
-        PathBuf::from(env::var("CARGO_MANIFEST_DIR")?).join("../../../../contracts");
+        PathBuf::from(env::var("CARGO_MANIFEST_DIR")?).join("../../../../contracts/grpc");
 
     let protos = PROTOS
         .iter()
@@ -18,9 +18,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let includes = vec![contracts_dir.clone()];
     let descriptor_path = PathBuf::from(env::var("OUT_DIR")?).join("api_descriptor.bin");
 
-    tonic_prost_build::configure()
+    let tonic_builder = tonic_prost_build::configure();
+    let mut config = prost_build::Config::new();
+    config.service_generator(tonic_builder.service_generator());
+
+    prost_validate_build::Builder::new()
         .file_descriptor_set_path(descriptor_path)
-        .compile_protos(&protos, &includes)?;
+        .compile_protos_with_config(config, &protos, &includes)?;
 
     Ok(())
 }

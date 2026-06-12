@@ -1,13 +1,14 @@
 use std::sync::Arc;
 
-use axum::{Router, extract::State, response::Json, routing::get};
+use axum::Router;
 
-use crate::{models::Card, ports::Handler};
+use crate::ports::Handler;
 
-pub fn create(core: Arc<dyn Handler>) -> Router {
-    Router::new().route("/", get(handler)).with_state(core)
-}
+#[derive(Clone)]
+pub struct HttpAdapter;
 
-async fn handler(State(core): State<Arc<dyn Handler>>) -> Json<Vec<Card>> {
-    Json(core.get_cards().await)
+impl HttpAdapter {
+    pub fn new(core: Arc<dyn Handler>) -> Router {
+        Router::new().with_state(core)
+    }
 }

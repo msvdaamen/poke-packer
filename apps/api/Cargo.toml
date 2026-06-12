@@ -28,6 +28,9 @@ chrono = { version = "0.4.44", features = ["serde"] }
 tokio-util = { version = "0.7.18", features = ["rt"] }
 tower = { version = "0.5", features = ["full"] }
 tower-http = { version = "0.6", features = ["timeout", "cors"] }
+axum-extra = { version = "0.12", features = ["cookie", "query", "typed-header"] }
+headers = "0.4"
+http = "1"
 tracing = "0.1.44"
 
 opentelemetry = { version = "0.32.0", features = ["metrics"] }
@@ -43,6 +46,7 @@ tonic = "0.14.6"
 tonic-prost = "0.14.6"
 tonic-health = "0.14.6"
 tonic-reflection = "0.14.6"
+regex = "1.12.4"
 api = { path = "crates/api" }
 user = { path = "crates/user" }
 shared = { path = "crates/shared" }
@@ -52,9 +56,12 @@ card = { path = "crates/card" }
 [dependencies]
 tokio.workspace = true
 axum.workspace = true
+axum-extra.workspace = true
 dotenv.workspace = true
 tower.workspace = true
 tower-http.workspace = true
+headers.workspace = true
+http.workspace = true
 tracing.workspace = true
 opentelemetry.workspace = true
 opentelemetry_sdk.workspace = true

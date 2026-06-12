@@ -12,14 +12,8 @@ pub fn create_app(
     db_pool: Pool<Postgres>,
     cron_manager: Arc<CronScheduler>,
 ) -> (AxumRouter, GrpcRouter) {
-    let (user_http, user_service, user_grpc) = user::register(db_pool.clone());
-    let user_service = Arc::new(user_service);
-    let auth_http = auth::register(
-        config.auth.clone(),
-        db_pool.clone(),
-        cron_manager.clone(),
-        user_service,
-    );
+    let (user_http, user_grpc) = user::register(db_pool.clone());
+    let auth_http = auth::register(config.auth.clone(), db_pool.clone(), cron_manager.clone());
     let card_http = card::register(config.card.clone());
 
     (

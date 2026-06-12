@@ -1,31 +1,45 @@
 use std::sync::Arc;
 
+use axum::{
+    Router,
+    extract::{Json, State},
+    routing::post,
+};
+use http::StatusCode;
+
 use crate::{
-    api::{SignInRequest, SignInResponse},
-    models::SignInError,
+    adapters::primary::dto::SignInDto,
+    api::SignInResponse,
+    models::{self, SignInError},
     ports::Handler,
 };
-use axum::{Json, Router, extract::State, http::StatusCode, routing::post};
-use axum_valid::Valid;
 
-type RouteState = Arc<dyn Handler>;
+#[derive(Clone)]
+pub struct HttpAdapter;
 
-pub fn create(core: Arc<dyn Handler>) -> Router {
-    Router::new()
-        .route("/sign-in", post(sign_in))
-        .with_state(core)
+impl HttpAdapter {
+    pub fn new(core: Arc<dyn Handler>) -> Router {
+        Router::new()
+            .route("/sign-in", post(sign_in))
+            .with_state(core)
+    }
 }
 
 async fn sign_in(
-    State(core): State<RouteState>,
-    Valid(Json(payload)): Valid<Json<SignInRequest>>,
+    State(core): State<Arc<dyn Handler>>,
+    Json(payload): Json<SignInDto>,
 ) -> Result<Json<SignInResponse>, StatusCode> {
-    let result = core.sign_in(payload.into()).await;
+    let result = core
+        .sign_in(models::SignInDto {
+            email: payload.email,
+            password: payload.password,
+        })
+        .await;
     match result {
         Ok(result) => Ok(Json(result.into())),
         Err(err) => match err {
             SignInError::IncorrectPassword => Err(StatusCode::UNAUTHORIZED),
-            SignInError::UserNotFound => Err(StatusCode::NOT_FOUND),
+            SignInError::UserNotFound => Err(StatusCode::UNAUTHORIZED),
             SignInError::InternalServerError => Err(StatusCode::INTERNAL_SERVER_ERROR),
         },
     }

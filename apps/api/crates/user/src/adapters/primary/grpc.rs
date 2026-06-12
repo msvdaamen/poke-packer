@@ -4,6 +4,7 @@ use api::grpc::user::user_service_server::UserService;
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use prost_types::Timestamp;
+use prost_validate::Validator;
 use tonic::Response;
 
 use crate::{models, ports::Handler};
@@ -27,6 +28,9 @@ impl UserService for GrpcAdapter {
     {
         let now = std::time::Instant::now();
         let r = request.into_inner();
+        r.validate()
+            .map_err(|err| tonic::Status::invalid_argument(err.to_string()))?;
+
         let user = self
             .core
             .find_with_password_by_email(r.email.as_str())

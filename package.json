@@ -1,3 +1,14 @@
 {
-  "name": "@poke-packer"
+  "name": "poke-packer",
+  "private": true,
+  "scripts": {
+    "validate:http": "bun scripts/openapi.mjs validate",
+    "generate:http": "bun scripts/openapi.mjs generate",
+    "generate:http:server": "bun scripts/openapi.mjs generate:server",
+    "generate:http:client": "bun scripts/openapi.mjs generate:client"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.34.0",
+    "yaml": "^2.9.0"
+  }
 }

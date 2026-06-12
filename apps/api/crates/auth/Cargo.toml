@@ -5,6 +5,9 @@ edition = "2024"
 
 [dependencies]
 axum.workspace = true
+axum-extra.workspace = true
+headers.workspace = true
+http.workspace = true
 sqlx.workspace = true
 serde.workspace = true
 argon2.workspace = true

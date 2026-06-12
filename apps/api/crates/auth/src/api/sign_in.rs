@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use shared::types::Email;
 use validator::Validate;
 
 use crate::models;
@@ -21,8 +22,7 @@ impl From<models::SignInResult> for SignInResponse {
 
 #[derive(Debug, Validate, Deserialize)]
 pub struct SignInRequest {
-    #[validate(email)]
-    pub email: String,
+    pub email: Email,
     #[validate(length(min = 8))]
     pub password: String,
 }

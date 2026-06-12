@@ -1,3 +1,3 @@
 mod http;
 
-pub use http::create as http;
+pub use http::HttpAdapter;
